@@ -1,0 +1,81 @@
+data = [-10000, -1, 1, 3, 10003]
+
+
+def calculate_mean(data):
+    """
+    Return the mean of a python list
+
+    If data is empty raise a ValueError
+
+    :param data: a list of numbers
+    :return: the mean of the list
+    :rtype: float
+    :raise ValueError:
+    """
+    if len(data) == 0:
+        raise ValueError("impossible to calculate mean from a list of empty numbers!")
+    return float(sum(data) / len(data))
+
+
+calculate_mean(data)
+
+
+def calculate_standard_deviation(data):
+    """
+    Return the standard deviation of a python list using the
+    population size (N) in order to calculate the variance.
+
+    If data is empty raise a ValueError
+
+    :param data: list of numbers
+    :return: the standard deviation of the list
+    :rtype: float
+    :raise ValueError:
+    """
+    if len(data) == 0:
+        raise ValueError("impossible to calculate standard deviation from a list of empty numbers!")
+    mean = sum(data)/len(data)
+    # Finding the sum of squares
+    sos = [(x - mean) ** 2 for x in data]
+    # Finding the variance by taking an average of the sum of squares
+    variance = sum(sos)/len(sos)
+    # Finding the standard deviation with the square root of the variance
+    stand_dev = variance**0.5
+    return stand_dev
+
+
+calculate_standard_deviation(data)
+
+
+def remove_outliers(data):
+    """
+    Given a list of numbers, find outliers and return a new
+    list that contains all points except outliers
+    We consider points lying outside 2 standard
+    deviations from the mean.
+
+    Make sure that you do not modify the original list!
+
+    If data is empty raise a ValueError
+
+    :param data: list of numbers
+    :return: a new list without outliers
+    :rtype: list
+    :raise ValueError:
+    """
+    if len(data) == 1:
+        return data
+    if len(data) == 0:
+        raise ValueError("impossible to calculate mean from a list of empty numbers!")
+    else:
+        mean = sum(data)/len(data)
+        s = [(x - mean) ** 2 for x in data]
+        variance = sum(s)/len(s)
+        sd = variance**0.5
+        # Adding all elements within two standard deviations from the mean into a list
+        final_list = [x for x in data if x > mean - 2 * sd]
+        final_list = [x for x in final_list if x < mean + 2 * sd]
+        return final_list
+
+
+remove_outliers(data)
