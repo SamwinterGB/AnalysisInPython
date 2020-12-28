@@ -1,0 +1,122 @@
+p, n, x = 0.5, 3, 2
+
+
+def head_tails(p, n):
+    """
+    Given a coin that have probability p of giving a heads
+    in each toss independently, what is the probability of
+    having n heads consecutively in a row?
+
+    :param p: probability of a head
+    :param n: number of heads in a row (int)
+    :return: probability of having n heads in a row
+    :rtype: float
+    """
+
+    # Probability of n heads consecutively given input probability of heads in one toss
+    if p < 0:
+        raise ValueError("The p probability of an event occuring cannot be less than zero")
+    if p > 1:
+        raise ValueError("The p probability of an event occuring cannot be more than one")
+    return p**n
+
+
+head_tails(p, n)
+
+
+# Probability of n heads consecutively given a fair coin and fair toss
+def head_tails_fair(n):
+    return 0.5 ** n
+
+
+head_tails_fair(n)
+
+
+def bin_dist(n, p, x):
+    """
+    Given n number of trials, p the probability of success,
+    what is the probability of having x successes?
+
+    Your function should raise a ValueError if x is higher
+    than n.
+
+    If you need to compute combinations, you can import the
+    function "comb" from the package "scipy.special"
+
+    :param n: number of trials (int)
+    :param p: probability of success
+    :param x: number of successes (int)
+    :return: probability of having x successes
+    :rtype: float
+    :raise ValueError: if x > n
+    """
+
+    if p < 0:
+        raise ValueError("The p probability of an event occuring cannot be less than zero")
+    if p > 1:
+        raise ValueError("The p probability of an event occuring cannot be more than one")
+
+    def combination(n, x):
+
+        if n < 0:
+            return ValueError("The n total number of trials cannot be less than zero")
+        if x > n:
+            raise ValueError('the number of success cannot be greater than the number of trials')
+        else:
+            def fact(x):
+                    fact = 1
+                    for i in range(1, x + 1):
+                        fact = fact * i
+                    return fact
+        return fact(n)/(fact(n-x)*fact(x))
+    return combination(n, x) * (p)**(x) * ((1-p)**(n-x))
+
+
+bin_dist(n, p, x)
+
+
+def bin_cdf(n, p, x):
+    """
+    Given n number of trials, p the probability of successes,
+    what is the probability of having less than or equal to x successes?
+
+    Your function should raise a ValueError if x is higher
+    than n.
+
+    :param n: number of trials (int)
+    :param p: probability of success
+    :param x: number of successes (int)
+    :return: probability of having less than or
+    equal to x successes
+    :rtype: float
+    :raise ValueError: if x > n
+    """
+
+    if p < 0:
+        raise ValueError("The p probability of an event occuring cannot be less than zero")
+    if x > n:
+        raise ValueError("number of successes cannot be more than the number of events")
+    if p > 1:
+        raise ValueError("The p probability of an event occuring cannot be more than one")
+    acc = 0
+    for j in range(0, x+1):
+        acc = acc + n_choose_j(n, j)*(p**j)*(1-p)**(n-j)
+    if x > n:
+        raise ValueError
+    return acc
+
+
+def f(n):
+    if n < 0:
+        return ValueError("number of successes cannot be less than 1")
+    if n == 0:
+        return 1
+    elif n > 0:
+        return n*f(n-1)
+
+
+def n_choose_j(n, j):
+    return f(n)/(f(j)*f(n-j))
+
+
+bin_cdf(n, p, x)
