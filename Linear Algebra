@@ -1,0 +1,182 @@
+completed using "vanilla" Python, without
+help from any library.
+"""
+
+
+w1 = 5
+w2 = 3
+x = (12, 18)
+
+u = (2, 2)
+v = (12, 18)
+
+
+A = [[1, 2, 3],
+     [4, 5, 6]]
+
+B = [[1, 2, 3],
+     [4, 5, 6]]
+
+
+def gradient(w1, w2, x):
+    """
+    Given the following function f(x) = w1 * x1^2 + w2 * x2
+    where x is a valid vector with coordinates [x1, x2]
+    evaluate the gradient of the function at the point x
+
+    :param w1: first coefficient
+    :param w2: second coefficient
+    :param x: a point represented by a valid tuple (x1, x2)
+    :return: the two coordinates of gradient of f
+    at point x
+    :rtype: float, float
+    """
+    if type(x) is tuple:
+        if len(x) != 2:
+            raise ValueError
+        elif (x[0] == 0 and x[1] == 0):
+            return (0, w2)
+        elif x[0] < 1:
+            return ValueError
+        else:
+            return 2*w1*x[0], w2
+    elif x[0] < 1:
+        return ValueError
+    else:
+        return 2*w1*x, w2
+
+
+gradient(w1, w2, x)
+
+
+def metrics(u, v):
+    """
+    Given two vectors u and v, compute the following distances/norm between
+    the two and return them.
+    - l1 Distance (norm)
+    - l2 Distance (norm)
+
+    If the two vectors have different dimensions,
+    you should raise a ValueError
+
+    :param u: first vector (list)
+    :param v: second vector (list)
+    :return: l1 distance, l2 distance
+    :rtype: float, float
+    :raise ValueError:
+    """
+    if len(u) != len(v):
+        raise ValueError("The vector dimensions cannot differ")
+    else:
+        l1 = sum([abs(i-j) for i, j in zip(u, v)])
+        L2 = (sum([(a - b) ** 2 for a, b in zip(u, v)])**0.5)
+        print("The l1 Distance (norm) and l2/Euclidean Distance (norm) between the vectors respectively:")
+    return l1, L2
+
+
+metrics(u, v)
+
+
+def list_mul(u, v):
+    """
+    Given two vectors, calculate and return the following quantities:
+    - element-wise sum
+    - element-wise product
+    - dot product
+
+    If the two vectors have different dimensions,
+    you should raise a ValueError
+
+    :param u: first vector (list)
+    :param v: second vector (list)
+    :return: the three quantities above
+    :rtype: list, list, float
+    :raise ValueError:
+    """
+
+    if len(v) != len(u):
+        raise ValueError("The vector dimensions cannot differ")
+    else:
+        EWS = [sum(x) for x in zip(u, v)]
+        ewp = [a * b for a, b in zip(u, v)]
+        DP = sum([u_i*v_i for u_i, v_i in zip(u, v)])
+        print("The element-wise sum, element-wise product and dot product of the vectors respectively:")
+        return EWS, ewp, DP
+
+
+list_mul(u, v)
+
+
+A = [[1, 2],
+     [4, 5]]
+
+B = [[1, 2],
+     [4, 5]]
+
+
+def matrix_mul(A, B):
+    """
+    Given two valid matrices A and B represented as a list of lists,
+    implement a function to multiply them together (A * B). Your solution
+    can either be a pure mathematical one or a more pythonic one where you
+    make use of list comprehensions.
+
+    For example:
+
+    is a matrix with two rows and three columns.
+
+    If the two matrices have incompatible dimensions or are not valid meaning that
+    not all rows in the matrices have the same length you should raise a ValueError.
+
+    :param A: first matrix (list of lists)
+    :param B: second matrix (list of lists)
+    :return: resulting matrix (list of lists)
+    :rtype: list of lists
+    :raise ValueError:
+    """
+
+    def zeros_matrix(rows, cols):
+        ZM = []
+        while len(ZM) < rows:
+            ZM.append([])
+            while len(ZM[-1]) < cols:
+                ZM[-1].append(0.0)
+
+        return ZM
+
+    # Finding the number of rows (number of lists in list of lists)
+    # And number of columns (size of rows/lists) in matrices A and B
+    rowsa = len(A)
+    colsa = len(A[0])
+    rowsb = len(B)
+    colsb = len(B[0])
+
+    if colsa != len(B):
+        raise ValueError("the number of rows in matrix B needs to equal the number of columns in Matrix A!")
+
+    # Raise ValueError if the size of rows/lists (or number of columns) of both matrices are not the same
+    if not all(len(list) == len(B[0]) for list in B):
+        raise ValueError("The number of columns in each row of the matrices need to be the same!")
+
+    # Raise ValueError if the size of rows/lists (or number of columns) of the matrix in parameter A are not the same
+    if not all(len(list) == len(A[0]) for list in A):
+        raise ValueError("The number of columns in the rows of the  matrix in parameter A need to be the same!")
+
+    # Section 2: Store matrix multiplication in a new matrix
+    # multiplying each column element in each row ii of AA times each row element
+    # in each column jj of BB and adding up those products.'''
+    C = zeros_matrix(rowsa, colsb)
+    # Iterating through each element in A by row/list
+    for i in range(rowsa):
+        # Iterating through each element in B by column position/position in list
+        for j in range(colsb):
+            total = 0
+            # Multiplying rows and columns together by their respective positions
+            for ii in range(colsa):
+                total += A[i][ii] * B[ii][j]
+            C[i][j] = total
+
+    return C
+
+
+matrix_mul(A, B)
